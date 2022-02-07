@@ -13,7 +13,7 @@ public class Server {
     private InetAddress adr = null;
     private DatagramSocket sc;
     private DatagramPacket paquete;
-    private byte[] buffer;
+    private byte[] buffer = new byte[2024];
 
     public Server(String ip, int puerto) {
 
@@ -30,6 +30,10 @@ public class Server {
 
     }
 
+    public InetAddress getAddress() {
+        return adr;
+    }
+
     public String getIp() {
 
         return ip;
@@ -40,9 +44,14 @@ public class Server {
         return puerto;
     }
 
+    public String recibir(int bSize) {          // TODO:importa ???
+        buffer = new byte[bSize];
+        return recibir();
+    }
+
     public String recibir() {
 
-        buffer = new byte[2024];
+        
         paquete = new DatagramPacket(buffer, buffer.length);
 
         try {
@@ -58,6 +67,8 @@ public class Server {
         adr = paquete.getAddress(); // TODO: cambiar
         clientPort = paquete.getPort();
 
+        buffer = new byte[2024];
+
         return new String(paquete.getData());
     }
 
@@ -65,6 +76,23 @@ public class Server {
 
         buffer = str.getBytes();
         paquete = new DatagramPacket(buffer, buffer.length, adr, clientPort);
+
+        try {
+
+            sc.send(paquete);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public void enviar(InetAddress clientAddr, String str ) {
+
+        buffer = str.getBytes();
+        paquete = new DatagramPacket(buffer, buffer.length, clientAddr, clientPort);
 
         try {
 

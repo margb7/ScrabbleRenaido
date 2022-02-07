@@ -11,7 +11,7 @@ public class Client {
     private DatagramSocket sc;
     private DatagramPacket paquete;
     private int puerto;
-    private byte[] buffer = new byte[1024];
+    private byte[] buffer = new byte[4096];
 
     public Client(String ip, int puerto) {
 
@@ -53,7 +53,10 @@ public class Client {
     }
 
     public String respuesta() {
-        
+
+        buffer = new byte[4096];
+        paquete = new DatagramPacket(buffer, buffer.length);
+
         try {
 
             sc.receive(paquete);

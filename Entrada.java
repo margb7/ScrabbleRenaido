@@ -13,5 +13,18 @@ public class Entrada {
     
         return in.nextLine();
     }
+    public static int getInt() {
 
+        do {
+
+            if(in.hasNext() && !in.hasNextInt() ) {
+
+                System.out.println("Introduce un int");
+
+            }
+
+        }while(!in.hasNextInt());
+
+        return in.nextInt();
+    }
 }
