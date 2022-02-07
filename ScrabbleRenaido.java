@@ -1,16 +1,14 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Pattern;
 
-import javax.sound.sampled.SourceDataLine;
 
 public class ScrabbleRenaido {
 
     private static Server srv;
     private static Client cli;
     private static String nombreJugador;
+    private static Partida partida; 
 
     public static void main(String[] args) {
 
