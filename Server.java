@@ -42,7 +42,7 @@ public class Server {
 
     public String recibir() {
 
-        buffer = new byte[1024];
+        buffer = new byte[2024];
         paquete = new DatagramPacket(buffer, buffer.length);
 
         try {

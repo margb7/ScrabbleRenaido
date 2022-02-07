@@ -17,18 +17,7 @@ public class Client {
 
         try {
 
-            byte[] tmp = new byte[4];
-
-            tmp[0] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));      // TODO: cambiar este cacho de pedazo de ladrillo
-            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
-            tmp[1] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
-            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
-            tmp[2] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
-            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
-            tmp[3] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
-            ip = ip.substring(ip.indexOf(",") + 1, ip.length()); 
-
-            adr = InetAddress.getByAddress(tmp);
+            adr = InetAddress.getByName(ip);
 
             try {
 
