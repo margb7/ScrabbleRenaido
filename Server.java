@@ -3,42 +3,35 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
-public class Server{
-    
+public class Server {
+
     private int puerto;
     private String ip;
 
+    private int clientPort = 0;
     private InetAddress adr = null;
     private DatagramSocket sc;
     private DatagramPacket paquete;
     private byte[] buffer;
 
-    Server(String ip,int puerto){
-    
+    public Server(String ip, int puerto) {
+
         this.puerto = puerto;
         this.ip = ip;
 
-        try{
+        try {
 
-            adr = InetAddress.getByName(ip);
+            sc = new DatagramSocket(puerto);
 
-            try{
+        } catch (SocketException e) {
 
-                sc = new DatagramSocket(puerto);
-
-            }catch(SocketException e){
-
-            }
-
-        }catch(UnknownHostException e){
-            
         }
+
     }
 
     public String getIp() {
-        
+
         return ip;
     }
 
@@ -47,23 +40,31 @@ public class Server{
         return puerto;
     }
 
-    public byte[] escuchar(){
+    public String recibir() {
 
-        try{
+        buffer = new byte[1024];
+        paquete = new DatagramPacket(buffer, buffer.length);
+
+        try {
 
             sc.receive(paquete);
-            buffer = paquete.getData();
 
-        }catch(IOException e){
+        } catch (IOException e) {
 
-            return null;  // codigo ilegalismo 
-            
+            e.printStackTrace();
+
         }
 
-        return this.buffer;
+        adr = paquete.getAddress(); // TODO: cambiar
+        clientPort = paquete.getPort();
+
+        return new String(paquete.getData());
     }
 
-    public void enviar(byte[] buffer ) {
+    public void enviar(String str) {
+
+        buffer = str.getBytes();
+        paquete = new DatagramPacket(buffer, buffer.length, adr, clientPort);
 
         try {
 
@@ -71,13 +72,15 @@ public class Server{
 
         } catch (IOException e) {
 
+            e.printStackTrace();
+
         }
 
     }
 
     public String toString() {
 
-        return "IP:" + ip + ":" + puerto; 
+        return "IP:" + ip + ":" + puerto;
     }
 
 }

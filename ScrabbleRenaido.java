@@ -32,17 +32,16 @@ public class ScrabbleRenaido {
 
     public static void crearSala() {
 
-        int num;
-
-        System.out.println("ip de ordenador del otro jugador: ");
-
-        srv = new Server(Entrada.getString(), 7555);
+        srv = new Server("", 7555);
+        String str;
 
         while(true) {
-
-            srv.enviar(Entrada.getString().getBytes());
-            System.out.println(new String(srv.escuchar()));
-
+            
+            str = srv.recibir();    
+            System.out.println(str);
+            System.out.println("Envia:");
+            srv.enviar(Entrada.getString());
+            
         }
 
     }
@@ -55,8 +54,9 @@ public class ScrabbleRenaido {
         
         while(true) {
 
-            System.out.println(new String(cli.recibir()));
-            cli.enviar(Entrada.getString().getBytes());
+            System.out.println("Envia:");
+            cli.enviar(Entrada.getString());
+            System.out.println(new String(cli.respuesta()));
 
         }
 

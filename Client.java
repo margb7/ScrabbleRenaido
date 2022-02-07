@@ -11,56 +11,72 @@ public class Client {
     private DatagramSocket sc;
     private DatagramPacket paquete;
     private int puerto;
+    private byte[] buffer = new byte[1024];
 
     public Client(String ip, int puerto) {
 
         try {
 
-            adr = InetAddress.getByName(ip);
+            byte[] tmp = new byte[4];
+
+            tmp[0] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));      // TODO: cambiar este cacho de pedazo de ladrillo
+            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
+            tmp[1] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
+            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
+            tmp[2] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
+            ip = ip.substring(ip.indexOf(",") + 1, ip.length());
+            tmp[3] = Byte.parseByte(ip.substring(0,ip.indexOf(".") - 1 ));
+            ip = ip.substring(ip.indexOf(",") + 1, ip.length()); 
+
+            adr = InetAddress.getByAddress(tmp);
+
+            try {
+
+                sc = new DatagramSocket();
+
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
 
         } catch (UnknownHostException e) {
 
         }
 
+        this.puerto = puerto;
+
     }
 
-    public void enviar(byte[] buffer) {
-
-        try {
-
-            sc = new DatagramSocket();
-
-        } catch (SocketException e) {
-
-            sc = null;
-
-        }
-
+    public void enviar(String str) {
+ 
+        buffer = str.getBytes();
         paquete = new DatagramPacket(buffer, buffer.length, adr, puerto);
-
+        
         try {
 
             sc.send(paquete);
 
         } catch (IOException e) {
 
+            e.printStackTrace();
+
         }
 
     }
 
-    public byte[] recibir() {
-
-        byte[] buffer = null;
-
+    public String respuesta() {
+        
         try {
 
             sc.receive(paquete);
-            buffer = paquete.getData();
 
-        } catch(IOException e )  {
+        } catch (IOException e) {
+            
+            e.printStackTrace();
 
-        } 
-        return buffer; 
+        }
+ 
+        return new String(buffer, 0, paquete.getLength());   
+        
     }
 
 }
