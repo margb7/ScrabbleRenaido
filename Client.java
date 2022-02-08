@@ -36,7 +36,8 @@ public class Client {
     }
 
     public void enviar(String str) {
- 
+        
+        str = Utilidades.ROT13(str);
         buffer = str.getBytes();
         paquete = new DatagramPacket(buffer, buffer.length, adr, puerto);
         
@@ -54,6 +55,7 @@ public class Client {
 
     public String respuesta() {
 
+        String out;
         buffer = new byte[4096];
         paquete = new DatagramPacket(buffer, buffer.length);
 
@@ -66,8 +68,10 @@ public class Client {
             e.printStackTrace();
 
         }
- 
-        return new String(buffer, 0, paquete.getLength());   
+        out = new String(buffer, 0, paquete.getLength());
+        out = Utilidades.decodeROT13(out);
+
+        return out;   
         
     }
 

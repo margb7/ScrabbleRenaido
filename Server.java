@@ -51,7 +51,7 @@ public class Server {
 
     public String recibir() {
 
-        
+        String out;
         paquete = new DatagramPacket(buffer, buffer.length);
 
         try {
@@ -69,11 +69,13 @@ public class Server {
 
         buffer = new byte[2024];
 
-        return new String(paquete.getData());
+        out = Utilidades.decodeROT13(new String(paquete.getData()));
+        return out;
     }
 
     public void enviar(String str) {
 
+        str = Utilidades.ROT13(str);
         buffer = str.getBytes();
         paquete = new DatagramPacket(buffer, buffer.length, adr, clientPort);
 
