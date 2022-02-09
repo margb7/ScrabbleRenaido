@@ -20,6 +20,18 @@ public class Utilidades {
         return contains;
     }
 
+    public static void listarJugadores(ArrayList<Jugador> jugadores) {
+
+        System.out.println("Lista jugadores: ");
+
+        for(Jugador jug : jugadores) {
+
+            System.out.println(jug);
+
+        }
+
+    }
+
     public static String ROT13(String str ) {
         return ROT13(str, 13);
     }
